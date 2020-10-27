@@ -22,17 +22,20 @@ class ManagerCallback extends BaseController
 
     public function cheakboxField($args)
     {
-        $option = get_option($args['label_for']);
+        $option = get_option($args['label']);
         $attribues = $option ? 'checked' : '';
-
+        $name = $args['label'];
         echo "
-            <input
-                type='checkbox'
-                name='{$args['label_for']}'
-                class='{$args['classes']}'
-                value='{$option}'
-                {$attribues}
-            >
+            <div class='{$args['classes']}'>
+                <input
+                    type='checkbox'
+                    name='{$name}'
+                    value='{$option}'
+                    id='{$name}'
+                    {$attribues}
+                >
+                <label for='{$name}'><div></div></label>
+            </div>
         ";
     }
 }

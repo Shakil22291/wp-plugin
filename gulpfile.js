@@ -46,8 +46,8 @@ gulp.task("browser-sync", function () {
   browserSync.init({
     proxy: projectURL,
     https: {
-      key: "/Users/alecaddd/.valet/Certificates/test.dev.key",
-      cert: "/Users/alecaddd/.valet/Certificates/test.dev.crt",
+      key: "",
+      cert: "",
     },
     injectChanges: true,
     open: false,

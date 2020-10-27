@@ -130,7 +130,7 @@ class Admin extends BaseController
 				'page' => 'myplugin',
 				'section' => 'myplugin_admin_index',
 				'args' => array(
-					'label_for' => 'cpt_manager',
+					'label' => 'cpt_manager',
 					'classes' => 'ui-toggle'
 				)
 			),
@@ -141,7 +141,7 @@ class Admin extends BaseController
 				'page' => 'myplugin',
 				'section' => 'myplugin_admin_index',
 				'args' => array(
-					'label_for' => 'taxonomy_manager',
+					'label' => 'taxonomy_manager',
 					'classes' => 'ui-toggle'
 				)
 			),
