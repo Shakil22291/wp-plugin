@@ -12,7 +12,13 @@ class ManagerCallback extends BaseController
 {
     public function cheakboxSanitize($input)
     {
-        return isset($input) ? true : false;
+        $output = array();
+
+        foreach ($this->managers as $key => $value) {
+            $output[$key] = isset($input[$key]) ? true : false;
+        }
+
+        return $output;
     }
 
     public function adminSectionManager()
@@ -22,16 +28,17 @@ class ManagerCallback extends BaseController
 
     public function cheakboxField($args)
     {
-        $option = get_option($args['label']);
-        $attribues = $option ? 'checked' : '';
-        $name = $args['label'];
+        $option_name = $args['option_name'];
+        $option = get_option($option_name);
+        $name = $option_name . "[" . $args['label'] . "]";
+        $attribues = $option[$args['label']] ? 'checked' : '';
         echo "
             <div class='{$args['classes']}'>
                 <input
                     type='checkbox'
                     name='{$name}'
-                    value='{$option}'
                     id='{$name}'
+                    value='1'
                     {$attribues}
                 >
                 <label for='{$name}'><div></div></label>

@@ -45,7 +45,7 @@ if (file_exists(dirname(__FILE__) . '/vendor/autoload.php')) {
  */
 function activate_alecaddd_plugin()
 {
-	Inc\Base\Activate::activate();
+	Inc\Base\Activate::run();
 }
 register_activation_hook(__FILE__, 'activate_alecaddd_plugin');
 
@@ -54,7 +54,7 @@ register_activation_hook(__FILE__, 'activate_alecaddd_plugin');
  */
 function deactivate_alecaddd_plugin()
 {
-	Inc\Base\Deactivate::deactivate();
+	Inc\Base\Deactivate::run();
 }
 register_deactivation_hook(__FILE__, 'deactivate_alecaddd_plugin');
 
