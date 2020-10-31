@@ -12,17 +12,14 @@ class Activate
 	{
 		flush_rewrite_rules();
 
-		/**
-		 * if the option is already exist in the databse then just return the function
-		 */
-		if (get_option('myplugin')) {
-			return;
+		if (!get_option('myplugin')) {
+			update_option('myplugin', array(
+				'cpt_manager' => true
+			));
 		}
 
-		$default = array(
-			'cpt_manager' => true
-		);
-
-		update_option('myplugin', $default);
+		if (!get_option('myplugin_cpt')) {
+			update_option('myplugin_cpt', array());
+		}
 	}
 }

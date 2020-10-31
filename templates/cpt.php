@@ -11,6 +11,29 @@
     <div class="tab-content">
         <div id="tab-1" class="tab-pane active">
             <h2>List of post tyepe</h2>
+            <table class="cpt-table">
+                <tr>
+                    <th>ID</th>
+                    <th>name</th>
+                    <th>action</th>
+                </tr>
+                <?php foreach (get_option('myplugin_cpt') as $option) : ?>
+                    <tr>
+                        <td><?= $option['post_type'] ?></td>
+                        <td><?= $option['post_type_name'] ?></td>
+                        <td>
+                            <a class="button" href="#">EDIT</a>
+                            <form method="POST" action="options.php" class="inline-block">
+                                <input type="hidden" name="remove" value="<?= $option['post_type']; ?>">
+                                <?php
+                                    settings_fields('myplugin_cpt');
+                                    submit_button('delete', 'secondary', 'submit', false);
+                                ?>
+                            </form>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
         </div>
 
         <div id="tab-2" class="tab-pane">

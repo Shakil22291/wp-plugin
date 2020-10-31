@@ -14,6 +14,18 @@ class CptCallbacks extends BaseController
     {
         $output = get_option('myplugin_cpt');
 
+        if(isset($_POST['remove'])) {
+            unset($output[$_POST['remove']]);
+
+            return $output;
+        }
+
+        if (count($output) == 0) {
+            $output[$input['post_type']] = $input;
+
+            return $output;
+        }
+
         foreach ($output as $key => $value) {
             if ($input['post_type'] === $key) {
                 $output[$key] = $input;
@@ -37,6 +49,7 @@ class CptCallbacks extends BaseController
                 id='{$args['label']}'
                 class='regular-text'
                 name='{$name}'
+                required
             >
         ";
     }
