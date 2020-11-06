@@ -6,6 +6,7 @@
 
 namespace Inc\Api\Callbacks;
 
+use Automattic\WooCommerce\Admin\RemoteInboxNotifications\IsEcommerceRuleProcessor;
 use Inc\Base\BaseController;
 
 class CptCallbacks extends BaseController
@@ -42,12 +43,14 @@ class CptCallbacks extends BaseController
         $option_name = $args['option_name'];
         $option = get_option($option_name);
         $name = $option_name . "[" . $args['label'] . "]";
+        $value = isset($_POST['edit_post_type']) ? $option[$_POST['edit_post_type']][$args['label']] : '';
 
         echo "
             <input
                 type='text'
                 id='{$args['label']}'
                 class='regular-text'
+                value='{$value}'
                 name='{$name}'
                 required
             >

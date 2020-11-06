@@ -112,7 +112,7 @@ class CustomPostTypeController extends BaseController
                 'args' => array(
                     'option_name' => 'myplugin_cpt',
                     'label' => 'post_type',
-		),
+        		),
             ),
             array(
                 'id' => 'post_type_name',

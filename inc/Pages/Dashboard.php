@@ -34,7 +34,6 @@ class Dashboard extends BaseController
 
 		$this->setPages();
 
-		// $this->setSubpages();
 
 		$this->setSettings();
 		$this->setSections();
@@ -50,7 +49,7 @@ class Dashboard extends BaseController
 		$this->pages = array(
 			array(
 				'page_title' => 'My plugin',
-				'menu_title' => 'hello',
+				'menu_title' => 'My plugin',
 				'capability' => 'manage_options',
 				'menu_slug' => 'myplugin',
 				'callback' => array($this->callbacks, 'adminDashboard'),

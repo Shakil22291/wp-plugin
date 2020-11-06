@@ -18,6 +18,10 @@ class Activate
 			));
 		}
 
+		if (!get_option('myplugin_taxonomy')) {
+			update_option('myplugin_taxonomy', array());
+		}
+
 		if (!get_option('myplugin_cpt')) {
 			update_option('myplugin_cpt', array());
 		}
