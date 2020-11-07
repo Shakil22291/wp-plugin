@@ -25,7 +25,8 @@ class BaseController
 		$this->managers = array(
 			'cpt_manager' => 'Activate the custom post type',
 			'taxonomy_manager' => 'Activate the custom Taxonomys',
-			'media_widget' => 'Medai Widget'
+			'media_widget' => 'Medai Widget',
+			'testimonial_manager' => 'Testimonial Manager'
 		);
 	}
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Inc\Base;
+namespace Inc\Api\Widgets;
 
 use WP_Widget;
 
@@ -50,7 +50,7 @@ class MediaWidget extends WP_Widget
         }
         if (!empty($instance['image'])) {
             echo "
-                <img  src='{$instance['image']}'>
+                <img style='max-width: 100%;'  src='{$instance['image']}'>
             ";
         }
         echo $args['after_widget'];

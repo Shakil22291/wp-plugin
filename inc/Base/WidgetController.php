@@ -2,6 +2,8 @@
 
 namespace Inc\Base;
 
+use Inc\Api\Widgets\MediaWidget;
+
 class WidgetController extends BaseController
 {
     /**
