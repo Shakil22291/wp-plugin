@@ -28,13 +28,17 @@ var browserSync = require("browser-sync").create();
 var reload = browserSync.reload;
 
 // Project related variables
-var projectURL = "https://test.dev";
+var projectURL = "localhost:3030";
 
 var styleSRC = "./src/scss/main.scss";
+var styleForm = "./src/scss/form.scss";
 var styleURL = "./assets/";
 var mapURL = "./";
 
-var jsSRC = "./src/js/main.js";
+var jsSRC = "./src/js/";
+var jsAdmin = "main.js";
+var jsFront = "form.js";
+var jsFiles = [jsAdmin, jsFront];
 var jsURL = "./assets/";
 
 var styleWatch = "./src/scss/**/*.scss";
@@ -56,7 +60,7 @@ gulp.task("browser-sync", function () {
 
 gulp.task("styles", function () {
   gulp
-    .src(styleSRC)
+    .src([styleSRC, styleForm])
     .pipe(sourcemaps.init())
     .pipe(
       sass({
@@ -74,19 +78,21 @@ gulp.task("styles", function () {
 });
 
 gulp.task("js", function () {
-  return browserify({
-    entries: [jsSRC],
-  })
-    .transform(babelify, { presets: ["env"] })
-    .bundle()
-    .pipe(source("main.js"))
-    .pipe(buffer())
-    .pipe(gulpif(options.has("production"), stripDebug()))
-    .pipe(sourcemaps.init({ loadMaps: true }))
-    .pipe(uglify())
-    .pipe(sourcemaps.write("."))
-    .pipe(gulp.dest(jsURL))
-    .pipe(browserSync.stream());
+  jsFiles.map(function (entry) {
+    return browserify({
+      entries: [jsSRC + entry],
+    })
+      .transform(babelify, { presets: ["env"] })
+      .bundle()
+      .pipe(source(entry))
+      .pipe(buffer())
+      .pipe(gulpif(options.has("production"), stripDebug()))
+      .pipe(sourcemaps.init({ loadMaps: true }))
+      .pipe(uglify())
+      .pipe(sourcemaps.write("."))
+      .pipe(gulp.dest(jsURL))
+      .pipe(browserSync.stream());
+  });
 });
 
 function triggerPlumber(src, url) {
