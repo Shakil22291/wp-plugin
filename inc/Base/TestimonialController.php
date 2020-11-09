@@ -2,8 +2,8 @@
 
 namespace Inc\Base;
 
-use Inc\Api\Callbacks\TestimonialCallbacks;
 use Inc\Api\SettingsApi;
+use Inc\Api\Callbacks\TestimonialCallbacks;
 
 class TestimonialController extends BaseController
 {
@@ -29,6 +29,48 @@ class TestimonialController extends BaseController
         $this->setShortCodePage();
 
         add_shortcode('testimonial-form', [$this, 'testimonial_form']);
+        add_action('wp_ajax_submit_testimonial', [$this, 'submit_testimonial']);
+        add_action('wp_ajax_nopriv_submit_testimonial', [$this, 'submit_testimonial']);
+    }
+
+    public function submit_testimonial()
+    {
+        $name    = sanitize_text_field($_POST['name']);
+        $email   = sanitize_email($_POST['email']);
+        $message = sanitize_textarea_field($_POST['message']);
+
+        $data = [
+            'name'     => $name,
+            'email'    => $email,
+            'approved' => 0,
+            'featured' => 0,
+        ];
+
+        $args = [
+            'post_title'   => 'Testimonial from ' . $name,
+            'post_content' => $message,
+            'post_author'  => 1,
+            'post_status'  => 'publish',
+            'post_type'    => 'testimonial',
+            'meta_input'   => [
+                '_myplugin_testimonial_key' => $data,
+            ],
+        ];
+
+        $postID = wp_insert_post($args);
+
+        if ($postID) {
+            $return = [
+                'status' => 'success',
+                'ID'     => $postID,
+            ];
+            wp_send_json($return);
+            wp_die();
+        }
+
+        wp_send_json(['status' => 'error']);
+
+        wp_die();
     }
 
     public function setShortCodePage()
@@ -40,8 +82,8 @@ class TestimonialController extends BaseController
                 'menu_title'  => 'ShortCodes',
                 'capability'  => 'manage_options',
                 'menu_slug'   => 'myplugin_testimonila_shortcode',
-                'callback'    => [$this->callbacks, 'shortCodePage']
-            ]
+                'callback'    => [$this->callbacks, 'shortCodePage'],
+            ],
         ];
 
         $this->settings->addSubPages($subpage)->register();
@@ -115,11 +157,11 @@ class TestimonialController extends BaseController
 
             <p>
                 <label class="meta-label" for="myplugin_testimonial_email">Author Email</label>
-                <input 
-                    type="email" 
-                    id="myplugin_testimonial_email" 
-                    name="myplugin_testimonial_email" 
-                    class="widefat" 
+                <input
+                    type="email"
+                    id="myplugin_testimonial_email"
+                    name="myplugin_testimonial_email"
+                    class="widefat"
                     value="<?php echo esc_attr($email); ?>"
                 >
             </p>
@@ -168,7 +210,7 @@ class TestimonialController extends BaseController
 
         $data = [
             'name'     => sanitize_text_field($_POST['myplugin_testimonial_author']),
-            'email'    => sanitize_text_field($_POST['myplugin_testimonial_email']),
+            'email'    => sanitize_email($_POST['myplugin_testimonial_email']),
             'approved' => isset($_POST['myplugin_testimonial_approved']) ? 1 : 0,
             'featured' => isset($_POST['myplugin_testimonial_featured']) ? 1 : 0,
         ];
