@@ -28,6 +28,7 @@ class TestimonialController extends BaseController
 
         $this->setShortCodePage();
 
+        add_shortcode('testimonial-slider', [$this, 'testimonial_slideshow']);
         add_shortcode('testimonial-form', [$this, 'testimonial_form']);
         add_action('wp_ajax_submit_testimonial', [$this, 'submit_testimonial']);
         add_action('wp_ajax_nopriv_submit_testimonial', [$this, 'submit_testimonial']);
@@ -35,6 +36,11 @@ class TestimonialController extends BaseController
 
     public function submit_testimonial()
     {
+        if ( ! DOING_AJAX || ! check_ajax_referer('testimonial_nonce', 'nonce')) {
+            wp_send_json(['status' => 'error']); 
+            wp_die();
+        }
+
         $name    = sanitize_text_field($_POST['name']);
         $email   = sanitize_email($_POST['email']);
         $message = sanitize_textarea_field($_POST['message']);
@@ -95,6 +101,15 @@ class TestimonialController extends BaseController
         echo "<link rel='stylesheet' href='{$this->plugin_url}/assets/form.css' type='text/css' media='all' />";
         require_once "$this->plugin_path/templates/contact-form.php";
         echo "<script src='{$this->plugin_url}/assets/form.js'></script>";
+
+        return ob_get_clean();
+    }
+    public function testimonial_slideshow()
+    {
+        ob_start();
+        echo "<link rel='stylesheet' href='{$this->plugin_url}/assets/slider.css' type='text/css' media='all' />";
+        require_once "$this->plugin_path/templates/slider.php";
+        echo "<script src='{$this->plugin_url}/assets/slider.js'></script>";
 
         return ob_get_clean();
     }

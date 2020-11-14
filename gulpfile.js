@@ -32,13 +32,15 @@ var projectURL = "localhost:3030";
 
 var styleSRC = "./src/scss/main.scss";
 var styleForm = "./src/scss/form.scss";
+var styleSlider = "./src/scss/slider.scss";
 var styleURL = "./assets/";
 var mapURL = "./";
 
 var jsSRC = "./src/js/";
 var jsAdmin = "main.js";
-var jsFront = "form.js";
-var jsFiles = [jsAdmin, jsFront];
+var jsForm = "form.js";
+var jsSlider = "slider.js";
+var jsFiles = [jsAdmin, jsForm, jsSlider];
 var jsURL = "./assets/";
 
 var styleWatch = "./src/scss/**/*.scss";
@@ -60,7 +62,7 @@ gulp.task("browser-sync", function () {
 
 gulp.task("styles", function () {
   gulp
-    .src([styleSRC, styleForm])
+    .src([styleSRC, styleForm, styleSlider])
     .pipe(sourcemaps.init())
     .pipe(
       sass({
