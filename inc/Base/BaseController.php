@@ -27,7 +27,8 @@ class BaseController
 			'taxonomy_manager' => 'Activate the custom Taxonomys',
 			'media_widget' => 'Medai Widget',
 			'testimonial_manager' => 'Testimonial Manager',
-			'template_manager' => 'Template Manager'
+			'template_manager' => 'Template Manager',
+			'ajax_login' => 'Ajax Login',
 		);
 	}
 
