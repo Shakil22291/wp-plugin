@@ -133,6 +133,7 @@ class TestimonialController extends BaseController
             'exclude_from_search' => true,
             'publicly_queryable'  => false,
             'supports'            => ['title', 'editor'],
+            'show_in_rest' => true
         ];
         register_post_type('testimonial', $args);
     }
@@ -181,9 +182,9 @@ class TestimonialController extends BaseController
                 >
             </p>
 
-            <div class="meta-container">
+            <div class="meta-container" style="margin-bottom: 5px;">
                 <label class="meta-label w-50 text-left" for="myplugin_testimonial_approved">Approved</label>
-                <div class="text-right w-50 inline">
+                <div class="text-right w-50 inline" style="display: inline-block;">
                     <div class="ui-toggle inline">
                         <input type="checkbox" id="myplugin_testimonial_approved" name="myplugin_testimonial_approved" value="1" <?= $approved ? 'checked' : ''; ?>>
                         <label for="myplugin_testimonial_approved"><div></div></label>
@@ -193,7 +194,7 @@ class TestimonialController extends BaseController
 
             <div class="meta-container">
                 <label class="meta-label w-50 text-left" for="myplugin_testimonial_featured">Featured</label>
-                <div class="text-right w-50 inline">
+                <div class="text-right w-50 inline" style="display: inline-block;">
                     <div class="ui-toggle inline">
                         <input type="checkbox" id="myplugin_testimonial_featured" name="myplugin_testimonial_featured" value="1" <?= $featured ? 'checked' : ''; ?>>
                         <label for="myplugin_testimonial_featured"><div></div></label>

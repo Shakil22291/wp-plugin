@@ -8,7 +8,7 @@ use Inc\Api\SettingsApi;
 
 class CustomPostTypeController extends BaseController
 {
-    public $subpages = array();
+    public $subpages = [];
     public $settings;
     public $callbacks;
     public $cptCallbacks;
@@ -17,12 +17,13 @@ class CustomPostTypeController extends BaseController
 
     public function register()
     {
+        if (!$this->activated('cpt_manager')) {
+            return;
+        }
 
-        if (!$this->activated('cpt_manager')) return;
-
-        $this->settings = new SettingsApi();
+        $this->settings     = new SettingsApi();
         $this->cptCallbacks = new CptCallbacks();
-        $this->callbacks = new AdminCallbacks();
+        $this->callbacks    = new AdminCallbacks();
 
         $this->setSubpages();
 
@@ -32,23 +33,22 @@ class CustomPostTypeController extends BaseController
 
         $this->settings->addSubPages($this->subpages)->register();
 
-        add_action('init', array($this, 'registerCustomPostType'));
+        add_action('init', [$this, 'registerCustomPostType']);
     }
 
     public function setSubpages()
     {
-        $this->subpages = array(
-            array(
+        $this->subpages = [
+            [
                 'parent_slug' => 'myplugin',
-                'page_title' => 'Custom Post Types',
-                'menu_title' => 'CPT',
-                'capability' => 'manage_options',
-                'menu_slug' => 'myplugin_cpt',
-                'callback' => array($this->callbacks, 'adminCpt')
-            ),
-        );
+                'page_title'  => 'Custom Post Types',
+                'menu_title'  => 'CPT',
+                'capability'  => 'manage_options',
+                'menu_slug'   => 'myplugin_cpt',
+                'callback'    => [$this->callbacks, 'adminCpt']
+            ],
+        ];
     }
-
 
     public function registerCustomPostType()
     {
@@ -57,86 +57,85 @@ class CustomPostTypeController extends BaseController
         foreach ($options as $option) {
             register_post_type(
                 $option['post_type'],
-                array(
-                    'labels' => array(
-                        'name' => $option['post_type_name'],
+                [
+                    'labels' => [
+                        'name'          => $option['post_type_name'],
                         'singular_name' => $option['singular_name']
-                    ),
-                    'public' => true,
-                    'has_archive' => true,
+                    ],
+                    'public'          => true,
+                    'has_archive'     => true,
                     'capability_type' => 'post',
-                    'supports' => array('title', 'editor', 'author', 'thumbnail', 'excerpt', 'trackbacks', 'custom-fields', 'comments', 'revisions', 'post-formats'),
-                    'taxonomies'  => array('category', 'post_tag'),
-                )
+                    'supports'        => ['title', 'editor', 'author', 'thumbnail', 'excerpt', 'trackbacks', 'custom-fields', 'comments', 'revisions', 'post-formats'],
+                    'show_in_rest'    => true,
+                    'taxonomies'      => ['category', 'post_tag', 'newyaxonomy'],
+                ]
             );
         }
     }
 
     public function setSettings()
     {
-
-        $args = array(
-            array(
+        $args = [
+            [
                 'option_group' => 'myplugin_cpt',
-                'option_name' => 'myplugin_cpt',
-                'callback' => array($this->cptCallbacks, 'cptSanitize')
-            )
-        );
+                'option_name'  => 'myplugin_cpt',
+                'callback'     => [$this->cptCallbacks, 'cptSanitize']
+            ]
+        ];
 
         $this->settings->setSettings($args);
     }
 
     public function setSections()
     {
-        $args = array(
-            array(
-                'id' => 'myplugin_cpt_index',
+        $args = [
+            [
+                'id'    => 'myplugin_cpt_index',
                 'title' => 'Settings',
-                'page' => 'myplugin_cpt'
-            )
-        );
+                'page'  => 'myplugin_cpt'
+            ]
+        ];
 
         $this->settings->setSections($args);
     }
 
     public function setFields()
     {
-
-        $args = array(
-            array(
-                'id' => 'post_type',
-                'title' => 'ID',
-                'callback' => array($this->cptCallbacks, 'textField'),
-                'page' => 'myplugin_cpt',
-                'section' => 'myplugin_cpt_index',
-                'args' => array(
+        $args = [
+            [
+                'id'       => 'post_type',
+                'title'    => 'ID',
+                'callback' => [$this->cptCallbacks, 'textField'],
+                'page'     => 'myplugin_cpt',
+                'section'  => 'myplugin_cpt_index',
+                'args'     => [
                     'option_name' => 'myplugin_cpt',
-                    'label' => 'post_type',
-        		),
-            ),
-            array(
-                'id' => 'post_type_name',
-                'title' => 'Post type name',
-                'callback' => array($this->cptCallbacks, 'textField'),
-                'page' => 'myplugin_cpt',
-                'section' => 'myplugin_cpt_index',
-                'args' => array(
+                    'label'       => 'post_type',
+                ],
+            ],
+            [
+                'id'       => 'post_type_name',
+                'title'    => 'Post type name',
+                'callback' => [$this->cptCallbacks, 'textField'],
+                'page'     => 'myplugin_cpt',
+                'section'  => 'myplugin_cpt_index',
+                'args'     => [
                     'option_name' => 'myplugin_cpt',
-                    'label' => 'post_type_name',
-                )
-            ),
-            array(
-                'id' => 'singular_name',
-                'title' => 'Singular Name',
-                'callback' => array($this->cptCallbacks, 'textField'),
-                'page' => 'myplugin_cpt',
-                'section' => 'myplugin_cpt_index',
-                'args' => array(
+                    'label'       => 'post_type_name',
+                ]
+            ],
+            [
+                'id'       => 'singular_name',
+                'title'    => 'Singular Name',
+                'callback' => [$this->cptCallbacks, 'textField'],
+                'page'     => 'myplugin_cpt',
+                'section'  => 'myplugin_cpt_index',
+                'args'     => [
                     'option_name' => 'myplugin_cpt',
-                    'label' => 'singular_name',
-                )
-            ),
-        );
+                    'label'       => 'singular_name',
+                ]
+            ],
+        ];
 
         $this->settings->setFields($args);
     }
